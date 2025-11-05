@@ -33,7 +33,7 @@ npm run dev
 ---
 
 ### 🔗 Combined Verification
-- Backend running on: `http://localhost:8081`
+- Backend running on: `http://localhost:8081/hello`
 - Frontend running on: `http://localhost:5173`
 - Connection verified through API response displayed in React app.
 
