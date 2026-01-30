@@ -1,0 +1,131 @@
+.home-page {
+    min-height: 100vh;
+    background: #f7f8fb;
+    color: #0f172a;
+    font-family: "Poppins", "Segoe UI", sans-serif;
+    display: flex;
+    flex-direction: column;
+}
+
+.home-main {
+    padding: 2.5rem;
+    display: flex;
+    flex-direction: column;
+    gap: 2.5rem;
+}
+
+.home-hero {
+    display: grid;
+    grid-template-columns: minmax(280px, 1.2fr) minmax(240px, 0.8fr);
+    gap: 2rem;
+    align-items: center;
+}
+
+.home-kicker {
+    text-transform: uppercase;
+    letter-spacing: 0.2em;
+    font-size: 0.75rem;
+    font-weight: 700;
+    color: #2f8fe0;
+    margin: 0 0 0.6rem;
+}
+
+.home-hero h1 {
+    margin: 0 0 0.8rem;
+    font-size: 2.6rem;
+}
+
+.home-subtitle {
+    margin: 0;
+    font-size: 1.05rem;
+    color: #334155;
+}
+
+.home-card {
+    background: #ffffff;
+    border: 1px solid #d8e1ef;
+    border-radius: 16px;
+    padding: 1.8rem;
+    box-shadow: 0 16px 30px rgba(15, 23, 42, 0.12);
+    display: flex;
+    flex-direction: column;
+    gap: 0.8rem;
+}
+
+.home-auth-actions {
+    display: flex;
+    align-items: center;
+    gap: 0.8rem;
+    flex-wrap: wrap;
+}
+
+.home-card-title {
+    font-weight: 700;
+    font-size: 1rem;
+}
+
+.home-status {
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: #0f172a;
+}
+
+.home-primary {
+    align-self: flex-start;
+    background: #5fb7ff;
+    color: #05203c;
+    padding: 0.6rem 1.6rem;
+    border-radius: 10px;
+    border: 1px solid #2f8fe0;
+    font-weight: 700;
+    cursor: pointer;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+}
+
+.home-secondary {
+    align-self: flex-start;
+    background: #ffffff;
+    color: #0f172a;
+    padding: 0.6rem 1.4rem;
+    border-radius: 10px;
+    border: 1px solid #9fb3cf;
+    font-weight: 700;
+    cursor: pointer;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+}
+
+.home-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(220px, 1fr));
+    gap: 1.5rem;
+}
+
+.home-panel {
+    background: #ffffff;
+    border-radius: 14px;
+    padding: 1.6rem;
+    border: 1px solid #d8e1ef;
+    box-shadow: 0 10px 20px rgba(15, 23, 42, 0.08);
+}
+
+.home-panel h3 {
+    margin-top: 0;
+}
+
+@media (max-width: 900px) {
+    .home-main {
+        padding: 1.5rem;
+    }
+
+    .home-hero {
+        grid-template-columns: 1fr;
+    }
+
+    .home-grid {
+        grid-template-columns: 1fr;
+    }
+}

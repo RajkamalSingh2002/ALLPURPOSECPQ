@@ -67,17 +67,14 @@ function Register() {
                             onChange={(e) => setEmail(e.target.value)}
                         />
 
-                        <label htmlFor="reg-domain">Domain:</label>
-                        <select
+                        <label htmlFor="reg-domain">Company Name:</label>
+                        <input
                             id="reg-domain"
+                            type="text"
                             value={domain}
                             onChange={(e) => setDomain(e.target.value)}
-                        >
-                            <option value="">Select Company</option>
-                            <option value="company-a">Company A</option>
-                            <option value="company-b">Company B</option>
-                            <option value="company-c">Company C</option>
-                        </select>
+                            placeholder="Enter your company name"
+                        />
                     </div>
 
                     {error && <p className="auth-error">{error}</p>}

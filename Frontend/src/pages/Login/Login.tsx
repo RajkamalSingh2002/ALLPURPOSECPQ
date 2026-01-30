@@ -1,11 +1,14 @@
 import { useEffect, useState, type FormEvent } from "react";
+import { useNavigate } from "react-router-dom";
 import "./Login.css";
 import logoAllCpq from "../../assets/logo_allCPQ.png";
+import { setLoggedIn } from "../../services/auth";
 
  function Login() {
     const [email, setEmail] = useState("");
  const [password, setPassword] = useState("");
  const [error, setError] = useState("");
+    const navigate = useNavigate();
 
     useEffect(() => {
         document.title = "allCPQ | Login";
@@ -22,8 +25,15 @@ import logoAllCpq from "../../assets/logo_allCPQ.png";
             return;
         }
 
+        if (email !== "admin@allcpq.com" || password !== "admin123") {
+            setError("Invalid credentials");
+            return;
+        }
+
         setError("");
         console.log("Login data:", { email, password });
+        setLoggedIn(true);
+        navigate("/config/product");
 
         // Later:
         // call API → /auth/login
