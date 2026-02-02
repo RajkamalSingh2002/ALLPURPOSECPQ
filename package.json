@@ -4,7 +4,7 @@
   "description": "**Steps completed:** 1. Created Maven project with Spring Boot 3.5.7. 2. Configured Java 17 compiler. 3. Changed default server port to `8081` in `application.properties`. 4. Added test REST controller (`/api/hello`). 5. Enabled CORS for frontend (`http://localhost:5173`).",
   "main": "index.js",
   "scripts": {
-    "dev": "concurrently -n BACKEND,FRONTEND \"cd Backend && ./mvnw spring-boot:run\" \"cd Frontend && npm run dev\"",
+    "dev": "concurrently -n BACKEND,FRONTEND \"cd Backend && mvnw spring-boot:run\" \"cd Frontend && npm run dev\"",
     "install:all": "cd Frontend && npm install"
   },
   "repository": {
