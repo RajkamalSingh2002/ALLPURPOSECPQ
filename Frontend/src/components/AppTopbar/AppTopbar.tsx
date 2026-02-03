@@ -56,6 +56,13 @@ function AppTopbar() {
                         Config <span className="config-caret">▾</span>
                     </NavLink>
                 )}
+
+                {loggedIn && (
+                <NavLink className={navClass} to="/pricing">
+                    Pricing
+                </NavLink>
+                )}
+
                 {loggedIn && (
                     <NavLink className={navClass} to="/api">
                         API
