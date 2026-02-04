@@ -4,6 +4,7 @@ import Home from "./pages/Home/Home";
 import Api from "./pages/Api/Api";
 import About from "./pages/About/About";
 import Config from "./pages/Config/Config";
+import Pricing from "./pages/Pricing/Pricing";
 import Questions from "./pages/Config/Questions";
 import Rates from "./pages/Config/Rates";
 import Wordings from "./pages/Config/Wordings.tsx";
@@ -23,7 +24,14 @@ export default function App() {
             <Route path="/register" element={<Home forceRegisterOpen />} />
             <Route path="/api" element={<RequireAuth><Api /></RequireAuth>} />
             <Route path="/about" element={<About />} />
-
+            <Route
+                path="/pricing"
+                element={
+                    <RequireAuth>
+                        <Pricing />
+                    </RequireAuth>
+                }
+            />
             {/* Base Config redirect to the first item in Quote Data */}
             <Route path="/config" element={<RequireAuth><Navigate to="/config/quote-data/products" replace /></RequireAuth>} />
 
