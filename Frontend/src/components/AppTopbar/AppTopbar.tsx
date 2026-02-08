@@ -53,7 +53,7 @@ function AppTopbar() {
                         className={`config-nav-link${isConfig ? " config-nav-active" : ""}`}
                         to="/config"
                     >
-                        Config <span className="config-caret">▾</span>
+                        Config
                     </NavLink>
                 )}
 
