@@ -48,7 +48,7 @@ function Register({ variant = "page", onClose }: RegisterProps) {
                 <div className="auth-card-title">Admin User Account</div>
 
                 <div className="auth-grid auth-grid-two">
-                    <label htmlFor="reg-username">Username:</label>
+                    <label htmlFor="reg-username">Name:</label>
                     <input
                         id="reg-username"
                         type="text"
@@ -72,7 +72,7 @@ function Register({ variant = "page", onClose }: RegisterProps) {
                         onChange={(e) => setEmail(e.target.value)}
                     />
 
-                    <label htmlFor="reg-domain">Company Name:</label>
+                    <label htmlFor="reg-domain">Company Domain Name:</label>
                     <input
                         id="reg-domain"
                         type="text"

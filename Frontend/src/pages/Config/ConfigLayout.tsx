@@ -1,4 +1,4 @@
-import { ReactNode } from "react";
+import { ReactNode, useEffect, useState } from "react";
 import { NavLink } from "react-router-dom";
 import AppTopbar from "../../components/AppTopbar/AppTopbar.tsx";
 import AppFooter from "../../components/AppFooter/AppFooter.tsx";
@@ -6,15 +6,35 @@ import "./Config.css";
 
 type ConfigSideType = "app-settings" | "quote-data" | "quote-config" | "user-admin";
 type QuoteDataTab = "products" | "components" | "questions" | "rates" | "wordings";
+type QuoteConfigTab = "formula-builder" | "pdf-template";
 
 type ConfigLayoutProps = {
     title: string;
     children: ReactNode;
     activeSide?: ConfigSideType;
     activeTab?: QuoteDataTab;
+    activeQuoteConfigTab?: QuoteConfigTab;
 };
 
-function ConfigLayout({ title, children, activeSide, activeTab }: ConfigLayoutProps) {
+function ConfigLayout({
+    title,
+    children,
+    activeSide,
+    activeTab,
+    activeQuoteConfigTab
+}: ConfigLayoutProps) {
+    const [quoteDataOpen, setQuoteDataOpen] = useState(activeSide === "quote-data");
+    const [quoteConfigOpen, setQuoteConfigOpen] = useState(activeSide === "quote-config");
+
+    useEffect(() => {
+        if (activeSide === "quote-data") {
+            setQuoteDataOpen(true);
+        }
+        if (activeSide === "quote-config") {
+            setQuoteConfigOpen(true);
+        }
+    }, [activeSide]);
+
     return (
         <div className="config-page">
             <AppTopbar />
@@ -27,19 +47,38 @@ function ConfigLayout({ title, children, activeSide, activeTab }: ConfigLayoutPr
                         APP Settings
                     </NavLink>
 
-                    <NavLink
-                        className={`config-side-link${activeSide === "quote-data" ? " config-side-active" : ""}`}
-                        to="/config/quote-data/products"
+                    <button
+                        className={`config-side-group-toggle${activeSide === "quote-data" ? " config-side-active" : ""}`}
+                        type="button"
+                        onClick={() => setQuoteDataOpen((open) => !open)}
                     >
-                        Quote Data
-                    </NavLink>
+                        <span>Quote Data</span>
+                        <span className={`config-side-caret${quoteDataOpen ? " config-side-caret-open" : ""}`}>▾</span>
+                    </button>
+                    {quoteDataOpen && (
+                        <div className="config-side-submenu">
+                            <NavLink className={`config-side-sub-link${activeTab === "products" ? " config-side-sub-active" : ""}`} to="/config/quote-data/products">Products</NavLink>
+                            <NavLink className={`config-side-sub-link${activeTab === "components" ? " config-side-sub-active" : ""}`} to="/config/quote-data/components">Components</NavLink>
+                            <NavLink className={`config-side-sub-link${activeTab === "questions" ? " config-side-sub-active" : ""}`} to="/config/quote-data/questions">Questions</NavLink>
+                            <NavLink className={`config-side-sub-link${activeTab === "rates" ? " config-side-sub-active" : ""}`} to="/config/quote-data/rates">Rates</NavLink>
+                            <NavLink className={`config-side-sub-link${activeTab === "wordings" ? " config-side-sub-active" : ""}`} to="/config/quote-data/wordings">Wordings</NavLink>
+                        </div>
+                    )}
 
-                    <NavLink
-                        className={`config-side-link${activeSide === "quote-config" ? " config-side-active" : ""}`}
-                        to="/config/quote-config"
+                    <button
+                        className={`config-side-group-toggle${activeSide === "quote-config" ? " config-side-active" : ""}`}
+                        type="button"
+                        onClick={() => setQuoteConfigOpen((open) => !open)}
                     >
-                        Quote Configuration
-                    </NavLink>
+                        <span>Quote Configuration</span>
+                        <span className={`config-side-caret${quoteConfigOpen ? " config-side-caret-open" : ""}`}>▾</span>
+                    </button>
+                    {quoteConfigOpen && (
+                        <div className="config-side-submenu">
+                            <NavLink className={`config-side-sub-link${activeQuoteConfigTab === "formula-builder" ? " config-side-sub-active" : ""}`} to="/config/quote-config/formula-builder">Formula Builder</NavLink>
+                            <NavLink className={`config-side-sub-link${activeQuoteConfigTab === "pdf-template" ? " config-side-sub-active" : ""}`} to="/config/quote-config/pdf-template">PDF Template</NavLink>
+                        </div>
+                    )}
 
                     <NavLink
                         className={`config-side-link${activeSide === "user-admin" ? " config-side-active" : ""}`}
@@ -47,24 +86,12 @@ function ConfigLayout({ title, children, activeSide, activeTab }: ConfigLayoutPr
                     >
                         User Administration
                     </NavLink>
-
-
                 </aside>
 
                 <main className="config-main">
                     <div className="config-header">
                         <h1>{title}</h1>
                     </div>
-
-                    {activeSide === "quote-data" && (
-                        <div className="config-tabs">
-                            <NavLink className={`config-tab${activeTab === "products" ? " config-tab-active" : ""}`} to="/config/quote-data/products">Products</NavLink>
-                            <NavLink className={`config-tab${activeTab === "components" ? " config-tab-active" : ""}`} to="/config/quote-data/components">Components</NavLink>
-                            <NavLink className={`config-tab${activeTab === "questions" ? " config-tab-active" : ""}`} to="/config/quote-data/questions">Questions</NavLink>
-                            <NavLink className={`config-tab${activeTab === "rates" ? " config-tab-active" : ""}`} to="/config/quote-data/rates">Rates</NavLink>
-                            <NavLink className={`config-tab${activeTab === "wordings" ? " config-tab-active" : ""}`} to="/config/quote-data/wordings">Wordings</NavLink>
-                        </div>
-                    )}
                     {children}
                 </main>
             </div>

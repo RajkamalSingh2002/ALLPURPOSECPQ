@@ -9,6 +9,9 @@ import Questions from "./pages/Config/Questions";
 import Rates from "./pages/Config/Rates";
 import Wordings from "./pages/Config/Wordings.tsx";
 import AppSettings from "./pages/Config/AppSettings";
+import FormulaBuilder from "./pages/Config/FormulaBuilder";
+import PdfTemplate from "./pages/Config/PdfTemplate";
+import Components from "./pages/Config/Components";
 import { isLoggedIn } from "./services/auth";
 import {JSX} from "react";
 
@@ -40,12 +43,14 @@ export default function App() {
             <Route path="/config/quote-data/questions" element={<RequireAuth><Questions /></RequireAuth>} />
             <Route path="/config/quote-data/rates" element={<RequireAuth><Rates /></RequireAuth>} />
             <Route path="/config/quote-data/wordings" element={<RequireAuth><Wordings /></RequireAuth>} />
-            <Route path="/config/quote-data/components" element={<RequireAuth><div>Components Table Page</div></RequireAuth>} />
+            <Route path="/config/quote-data/components" element={<RequireAuth><Components /></RequireAuth>} />
 
             {/* Primary Navigation Sections */}
             <Route path="/config/app-settings" element={<RequireAuth><AppSettings /></RequireAuth>} />
             <Route path="/config/user-admin" element={<RequireAuth><div>User Administration Table</div></RequireAuth>} />
-            <Route path="/config/quote-config" element={<RequireAuth><div>Quote Configuration Table</div></RequireAuth>} />
+            <Route path="/config/quote-config" element={<RequireAuth><Navigate to="/config/quote-config/formula-builder" replace /></RequireAuth>} />
+            <Route path="/config/quote-config/formula-builder" element={<RequireAuth><FormulaBuilder /></RequireAuth>} />
+            <Route path="/config/quote-config/pdf-template" element={<RequireAuth><PdfTemplate /></RequireAuth>} />
 
             {/* Catch-all */}
             <Route path="*" element={<Navigate to="/" replace />} />
