@@ -6,7 +6,8 @@
   "scripts": {
     "dev": "concurrently -n BACKEND,FRONTEND \"cd Backend && mvnw spring-boot:run\" \"cd Frontend && npm run dev\"",
     "install:all": "cd Frontend && npm install"
-  },
+  }
+,
   "repository": {
     "type": "git",
     "url": "git+https://github.com/FrinX019/AllPurposeCPQ.git"
@@ -21,5 +22,8 @@
   "homepage": "https://github.com/FrinX019/AllPurposeCPQ#readme",
   "devDependencies": {
     "concurrently": "^9.2.1"
+  },
+  "dependencies": {
+    "react-router-dom": "^7.13.0"
   }
 }
