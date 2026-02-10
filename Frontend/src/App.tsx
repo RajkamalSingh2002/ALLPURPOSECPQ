@@ -36,7 +36,8 @@ export default function App() {
                 }
             />
             {/* Base Config redirect to the first item in Quote Data */}
-            <Route path="/config" element={<RequireAuth><Navigate to="/config/quote-data/products" replace /></RequireAuth>} />
+            {/*<Route path="/config" element={<RequireAuth><Navigate to="/config/quote-data/products" replace /></RequireAuth>} />*/}
+            <Route path="/config" element={<RequireAuth><Navigate to="/config/app-settings" replace /></RequireAuth>} />
 
             {/* Quote Data Section */}
             <Route path="/config/quote-data/products" element={<RequireAuth><Config /></RequireAuth>} />
