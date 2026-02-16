@@ -6,7 +6,7 @@ type QuestionRow = {
     id: number;
     question: string;
     description: string;
-    type: "radio" | "select" | "number" | "text";
+    type: "radio" | "select" | "number" | "text" | "checkbox" | "date" | "textarea";
     page: number;
 };
 
@@ -33,6 +33,16 @@ const initialQuestions: QuestionRow[] = [
         page: 2
     }
 ];
+
+const QUESTION_TYPES = [
+    { value: "text", label: "Text Input" },
+    { value: "number", label: "Number Input" },
+    { value: "radio", label: "Radio Button (Single Choice)" },
+    { value: "select", label: "Dropdown Select (Single Choice)" },
+    { value: "checkbox", label: "Checkbox (Multiple Choice)" },
+    { value: "date", label: "Date Picker" },
+    { value: "textarea", label: "Multi-line Text Area" }
+] as const;
 
 function Questions() {
     const [formMode, setFormMode] = useState<"create" | "edit" | "delete" | null>(null);
@@ -241,10 +251,11 @@ function Questions() {
                                     }}
                                     disabled={formMode === "delete"}
                                 >
-                                    <option value="radio">Radio</option>
-                                    <option value="select">Select</option>
-                                    <option value="number">Number</option>
-                                    <option value="text">Text</option>
+                                    {QUESTION_TYPES.map((type) => (
+                                        <option key={type.value} value={type.value}>
+                                            {type.label}
+                                        </option>
+                                    ))}
                                 </select>
                             </label>
                             <label className="config-field config-question-field" data-area="page">
