@@ -2,6 +2,7 @@ import { useEffect, useState, type FormEvent } from "react";
 import "../Login/Login.css";
 import AppFooter from "../../components/AppFooter/AppFooter";
 import logoAllCpq from "../../assets/logo_allCPQ.png";
+import { register, login } from "../../services/authService";
 
 type RegisterProps = {
     variant?: "page" | "modal";
@@ -22,7 +23,7 @@ function Register({ variant = "page", onClose }: RegisterProps) {
         };
     }, []);
 
-    const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
+    const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
 
         if (!username || !password || !email || !domain) {
@@ -31,7 +32,15 @@ function Register({ variant = "page", onClose }: RegisterProps) {
         }
 
         setError("");
-        console.log("Register data:", { username, password, email, domain });
+        try {
+            await register(username, password, email, domain);
+            // Auto login after successful registration
+            await login(username, password);
+            if (onClose) onClose(); // Close modal on success
+        } catch (err: any) {
+            console.error("Registration failed:", err);
+            setError(err.message || "Registration failed. Please try again.");
+        }
     };
 
     const content = (
