@@ -8,17 +8,18 @@ import com.allpurposecpq.backend.auth.repository.RefreshTokenRepository;
 import com.allpurposecpq.backend.security.JwtTokenProvider;
 import com.allpurposecpq.backend.user.model.AuUser;
 import com.allpurposecpq.backend.user.model.AuRole;
+import com.allpurposecpq.backend.user.model.AuUserRoleXr;
 import com.allpurposecpq.backend.user.repository.AuRoleRepository;
 import com.allpurposecpq.backend.user.repository.AuUserRepository;
+import com.allpurposecpq.backend.user.repository.AuUserRoleXrRepository;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import com.allpurposecpq.backend.auth.dto.TokenRefreshRequest;
 import com.allpurposecpq.backend.auth.dto.TokenRefreshResponse;
-import com.allpurposecpq.backend.auth.model.RefreshToken;
-import com.allpurposecpq.backend.auth.repository.RefreshTokenRepository;
-
-import java.sql.JDBCType;
+//import com.allpurposecpq.backend.auth.model.RefreshToken;
+//import com.allpurposecpq.backend.auth.repository.RefreshTokenRepository;
+//import java.sql.JDBCType;
 import java.time.OffsetDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -33,7 +34,10 @@ public class AuthService {
     private final JwtTokenProvider jwtTokenProvider;
     private final PasswordEncoder passwordEncoder;
     private final JdbcTemplate jdbcTemplate;
+    private final AuUserRoleXrRepository auUserRoleXrRepository;
+
     public AuthService(AuUserRepository auUserRepository,
+                       AuUserRoleXrRepository auUserRoleXrRepository,
                        AuRoleRepository auRoleRepository,
                        RefreshTokenRepository refreshTokenRepository,
                        JwtTokenProvider jwtTokenProvider,
@@ -41,6 +45,7 @@ public class AuthService {
                        JdbcTemplate jdbcTemplate) {
         this.auUserRepository = auUserRepository;
         this.auRoleRepository = auRoleRepository;
+        this.auUserRoleXrRepository = auUserRoleXrRepository;
         this.refreshTokenRepository = refreshTokenRepository;
         this.jwtTokenProvider = jwtTokenProvider;
         this.passwordEncoder = passwordEncoder;
@@ -143,7 +148,7 @@ public class AuthService {
                 user.getDomainId()
         );
 
-        // Option A: reuse same refresh token (simpler for now)
+        // Option A: reuse the same refresh token (simpler for now)
         TokenRefreshResponse response = new TokenRefreshResponse();
         response.setAccessToken(newAccessToken);
         response.setRefreshToken(incomingToken);
@@ -174,8 +179,22 @@ public class AuthService {
     }
 
     private List<String> loadUserRoleNames(Long userId) {
-        // For now, fake it: you can later implement proper join using JdbcTemplate
-        // or create a custom repository method.
-        return new ArrayList<>();
+        List<AuUserRoleXr> mappings = auUserRoleXrRepository.findByUserId(userId);
+
+        if (mappings.isEmpty()) {
+            return new ArrayList<>();
+        }
+
+        List<Long> roleIds = mappings.stream()
+                .map(AuUserRoleXr::getRoleId)
+                .distinct()
+                .toList();
+
+        List<AuRole> roles = auRoleRepository.findByIdIn(roleIds);
+
+        return roles.stream()
+                .map(AuRole::getName) // adjust getter to your column mapping
+                .toList();
     }
+
 }
