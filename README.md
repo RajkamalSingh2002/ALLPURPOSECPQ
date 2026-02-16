@@ -43,3 +43,4 @@ npm run dev
 - Backend and frontend setup completed.
 - Connection confirmed between both applications.
 - Ready for next stage of feature development.
+- OAuth implemented and integrated with Frontend.
