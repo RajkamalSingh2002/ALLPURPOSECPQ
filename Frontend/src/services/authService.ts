@@ -1,4 +1,5 @@
 import api from './api';
+import { setLoggedIn } from './auth';
 
 // Types for API responses
 interface LoginRequest {
@@ -104,6 +105,7 @@ export const login = async (username: string, password: string): Promise<LoginRe
         // Store tokens and user info
         saveTokens(response.data.accessToken, response.data.refreshToken);
         saveUser(response.data.username, response.data.roles);
+        setLoggedIn(true);
 
         return response.data;
     } catch (error: any) {
@@ -157,4 +159,5 @@ export const refreshToken = async (): Promise<LoginResponse> => {
 
 export const logout = () => {
     clearTokens();
+    setLoggedIn(false);
 };

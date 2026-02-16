@@ -33,6 +33,7 @@ function Home({ forceLoginOpen = false, forceRegisterOpen = false }: HomeProps) 
 
     useEffect(() => {
         const handleAuthChange = () => setLoggedIn(isLoggedIn());
+        // Listen for the custom event dispatched by auth.ts
         window.addEventListener(AUTH_EVENT, handleAuthChange);
         return () => window.removeEventListener(AUTH_EVENT, handleAuthChange);
     }, []);
