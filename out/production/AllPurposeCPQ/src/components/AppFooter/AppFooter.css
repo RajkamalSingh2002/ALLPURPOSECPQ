@@ -1,0 +1,21 @@
+.app-footer {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.6rem;
+    padding: 1.5rem 1rem 2rem;
+    color: #334155;
+    font-family: "Poppins", "Segoe UI", sans-serif;
+    font-size: 0.95rem;
+}
+
+.app-footer-logo {
+    height: 26px;
+    width: auto;
+    object-fit: contain;
+}
+
+.app-footer-text {
+    font-weight: 600;
+    letter-spacing: 0.02em;
+}
