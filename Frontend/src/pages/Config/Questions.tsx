@@ -8,6 +8,17 @@ type QuestionRow = {
     description: string;
     type: "radio" | "select" | "number" | "text" | "checkbox" | "date" | "textarea";
     page: number;
+    // Advanced fields
+    sort_parent?: number;
+    input_val?: number;
+    field_sizing?: string;
+    field_constraint?: string;
+    field_attributes?: string;
+    active_when?: string;
+    image?: string; // storing file name or path for now
+    note_admin?: string;
+    start_date?: string;
+    stop_date?: string;
 };
 
 const initialQuestions: QuestionRow[] = [
@@ -48,11 +59,22 @@ function Questions() {
     const [formMode, setFormMode] = useState<"create" | "edit" | "delete" | null>(null);
     const [selectedQuestionId, setSelectedQuestionId] = useState<number | null>(null);
     const [questions, setQuestions] = useState<QuestionRow[]>(initialQuestions);
+    const [showAdvanced, setShowAdvanced] = useState(false);
+
     const [form, setForm] = useState<Omit<QuestionRow, "id">>({
         question: "",
         description: "",
         type: "radio",
-        page: 1
+        page: 1,
+        sort_parent: 0,
+        input_val: 0,
+        field_sizing: "",
+        field_constraint: "",
+        field_attributes: "",
+        active_when: "",
+        note_admin: "",
+        start_date: "",
+        stop_date: ""
     });
 
     const resetForm = () => {
@@ -60,8 +82,18 @@ function Questions() {
             question: "",
             description: "",
             type: "radio",
-            page: 1
+            page: 1,
+            sort_parent: 0,
+            input_val: 0,
+            field_sizing: "",
+            field_constraint: "",
+            field_attributes: "",
+            active_when: "",
+            note_admin: "",
+            start_date: "",
+            stop_date: ""
         });
+        setShowAdvanced(false);
     };
 
     const openCreateForm = () => {
@@ -82,7 +114,16 @@ function Questions() {
             question: question.question,
             description: question.description,
             type: question.type,
-            page: question.page
+            page: question.page,
+            sort_parent: question.sort_parent || 0,
+            input_val: question.input_val || 0,
+            field_sizing: question.field_sizing || "",
+            field_constraint: question.field_constraint || "",
+            field_attributes: question.field_attributes || "",
+            active_when: question.active_when || "",
+            note_admin: question.note_admin || "",
+            start_date: question.start_date || "",
+            stop_date: question.stop_date || ""
         });
         setFormMode("edit");
     };
@@ -93,7 +134,16 @@ function Questions() {
             question: question.question,
             description: question.description,
             type: question.type,
-            page: question.page
+            page: question.page,
+            sort_parent: question.sort_parent,
+            input_val: question.input_val,
+            field_sizing: question.field_sizing,
+            field_constraint: question.field_constraint,
+            field_attributes: question.field_attributes,
+            active_when: question.active_when,
+            note_admin: question.note_admin,
+            start_date: question.start_date,
+            stop_date: question.stop_date
         });
         setFormMode("delete");
     };
@@ -106,14 +156,27 @@ function Questions() {
             return;
         }
 
+        const newQuestionData = {
+            question: trimmedQuestion,
+            description: trimmedDescription,
+            type: form.type,
+            page: form.page,
+            sort_parent: form.sort_parent,
+            input_val: form.input_val,
+            field_sizing: form.field_sizing,
+            field_constraint: form.field_constraint,
+            field_attributes: form.field_attributes,
+            active_when: form.active_when,
+            note_admin: form.note_admin,
+            start_date: form.start_date,
+            stop_date: form.stop_date
+        };
+
         if (formMode === "create") {
             setQuestions((prev) => [
                 {
                     id: Date.now(),
-                    question: trimmedQuestion,
-                    description: trimmedDescription,
-                    type: form.type,
-                    page: form.page
+                    ...newQuestionData
                 },
                 ...prev
             ]);
@@ -127,10 +190,7 @@ function Questions() {
                     item.id === selectedQuestionId
                         ? {
                             ...item,
-                            question: trimmedQuestion,
-                            description: trimmedDescription,
-                            type: form.type,
-                            page: form.page
+                            ...newQuestionData
                         }
                         : item
                 )
@@ -222,6 +282,7 @@ function Questions() {
                                 submitForm();
                             }}
                         >
+                            {/* Standard Fields */}
                             <label className="config-field config-question-field" data-area="question">
                                 <span>Question:</span>
                                 <input
@@ -232,15 +293,7 @@ function Questions() {
                                     disabled={formMode === "delete"}
                                 />
                             </label>
-                            <label className="config-field config-question-field" data-area="description">
-                                <span>Description:</span>
-                                <textarea
-                                    rows={6}
-                                    value={form.description}
-                                    onChange={(event) => setForm((prev) => ({ ...prev, description: event.target.value }))}
-                                    disabled={formMode === "delete"}
-                                />
-                            </label>
+
                             <label className="config-field config-question-field" data-area="type">
                                 <span>Question Type:</span>
                                 <select
@@ -258,6 +311,7 @@ function Questions() {
                                     ))}
                                 </select>
                             </label>
+
                             <label className="config-field config-question-field" data-area="page">
                                 <span>Page Number:</span>
                                 <input
@@ -268,10 +322,122 @@ function Questions() {
                                     disabled={formMode === "delete"}
                                 />
                             </label>
-                            <label className="config-field config-question-field" data-area="image">
-                                <span>Image:</span>
-                                <input type="file" disabled={formMode === "delete"} />
+
+                            <label className="config-field config-question-field" data-area="description">
+                                <span>Description:</span>
+                                <textarea
+                                    rows={3}
+                                    value={form.description}
+                                    onChange={(event) => setForm((prev) => ({ ...prev, description: event.target.value }))}
+                                    disabled={formMode === "delete"}
+                                />
                             </label>
+
+                            {/* Advanced Fields Toggle */}
+                            <div className="config-advanced-toggle">
+                                <button
+                                    type="button"
+                                    className="config-action config-action-ghost"
+                                    onClick={() => setShowAdvanced(!showAdvanced)}
+                                >
+                                    {showAdvanced ? '▼ Hide Advanced Settings' : '► Show Advanced Settings'}
+                                </button>
+                            </div>
+
+                            {/* Advanced Fields */}
+                            {showAdvanced && (
+                                <div className="config-advanced-fields">
+                                    <label className="config-field config-question-field">
+                                        <span>Parent Order (sort_parent):</span>
+                                        <input
+                                            type="number"
+                                            value={form.sort_parent}
+                                            onChange={(e) => setForm(prev => ({ ...prev, sort_parent: Number(e.target.value) }))}
+                                            disabled={formMode === "delete"}
+                                        />
+                                    </label>
+                                    <label className="config-field config-question-field">
+                                        <span>Monetary Value (input_val):</span>
+                                        <input
+                                            type="number"
+                                            value={form.input_val}
+                                            onChange={(e) => setForm(prev => ({ ...prev, input_val: Number(e.target.value) }))}
+                                            disabled={formMode === "delete"}
+                                        />
+                                    </label>
+                                    <label className="config-field config-question-field">
+                                        <span>Field Size (field_sizing):</span>
+                                        <input
+                                            type="text"
+                                            placeholder='cols="n", rows="n"'
+                                            value={form.field_sizing}
+                                            onChange={(e) => setForm(prev => ({ ...prev, field_sizing: e.target.value }))}
+                                            disabled={formMode === "delete"}
+                                        />
+                                        <small style={{ color: '#666' }}>Format: cols="n", rows="n"</small>
+                                    </label>
+                                    <label className="config-field config-question-field">
+                                        <span>Field Constraint:</span>
+                                        <input
+                                            type="text"
+                                            value={form.field_constraint}
+                                            onChange={(e) => setForm(prev => ({ ...prev, field_constraint: e.target.value }))}
+                                            disabled={formMode === "delete"}
+                                        />
+                                    </label>
+                                    <label className="config-field config-question-field">
+                                        <span>Field Attributes:</span>
+                                        <input
+                                            type="text"
+                                            value={form.field_attributes}
+                                            onChange={(e) => setForm(prev => ({ ...prev, field_attributes: e.target.value }))}
+                                            disabled={formMode === "delete"}
+                                        />
+                                    </label>
+                                    <label className="config-field config-question-field">
+                                        <span>Only Active When:</span>
+                                        <input
+                                            type="text"
+                                            placeholder="iid=29 and to_number(ans) > 1"
+                                            value={form.active_when}
+                                            onChange={(e) => setForm(prev => ({ ...prev, active_when: e.target.value }))}
+                                            disabled={formMode === "delete"}
+                                        />
+                                        <small style={{ color: '#666' }}>Format: iid=29 and to_number(ans) &gt; 1</small>
+                                    </label>
+                                    <label className="config-field config-question-field">
+                                        <span>Admin Notes:</span>
+                                        <textarea
+                                            rows={2}
+                                            value={form.note_admin}
+                                            onChange={(e) => setForm(prev => ({ ...prev, note_admin: e.target.value }))}
+                                            disabled={formMode === "delete"}
+                                        />
+                                    </label>
+                                    <label className="config-field config-question-field">
+                                        <span>Start Date:</span>
+                                        <input
+                                            type="date"
+                                            value={form.start_date}
+                                            onChange={(e) => setForm(prev => ({ ...prev, start_date: e.target.value }))}
+                                            disabled={formMode === "delete"}
+                                        />
+                                    </label>
+                                    <label className="config-field config-question-field">
+                                        <span>End Date:</span>
+                                        <input
+                                            type="date"
+                                            value={form.stop_date}
+                                            onChange={(e) => setForm(prev => ({ ...prev, stop_date: e.target.value }))}
+                                            disabled={formMode === "delete"}
+                                        />
+                                    </label>
+                                    <label className="config-field config-question-field" data-area="image">
+                                        <span>Image:</span>
+                                        <input type="file" disabled={formMode === "delete"} />
+                                    </label>
+                                </div>
+                            )}
                         </form>
                     </section>
 

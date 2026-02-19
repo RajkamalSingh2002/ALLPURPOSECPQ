@@ -555,11 +555,12 @@
 
 .config-question-grid {
     display: grid;
-    grid-template-columns: minmax(280px, 1.1fr) minmax(260px, 1fr);
+    grid-template-columns: 1fr 1fr;
     grid-template-areas:
-        "question description"
-        "type description"
-        "page image";
+        "question type"
+        "description page"
+        "toggle toggle"
+        "advanced advanced";
     gap: 1.4rem 2.2rem;
 }
 
@@ -567,10 +568,6 @@
     display: grid;
     grid-template-columns: repeat(2, minmax(220px, 1fr));
     gap: 1.6rem 2.4rem;
-}
-
-.config-question-field {
-    margin: 0;
 }
 
 .config-question-field[data-area="question"] {
@@ -589,8 +586,20 @@
     grid-area: page;
 }
 
-.config-question-field[data-area="image"] {
-    grid-area: image;
+.config-advanced-toggle {
+    grid-area: toggle;
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 0.5rem;
+}
+
+.config-advanced-fields {
+    grid-area: advanced;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.4rem 2.2rem;
+    padding-top: 1rem;
+    border-top: 1px solid #e2e8f0;
 }
 
 .config-field {
