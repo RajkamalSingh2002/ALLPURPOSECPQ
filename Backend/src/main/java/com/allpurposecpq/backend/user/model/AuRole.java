@@ -1,66 +1,44 @@
 package com.allpurposecpq.backend.user.model;
 
-import org.springframework.data.annotation.Id;
-import org.springframework.data.relational.core.mapping.Table;
-import org.springframework.data.relational.core.mapping.Column;
-
+import jakarta.persistence.*;
 import java.time.OffsetDateTime;
 
-@Table("AU_ROLE")
+@Entity
+@Table(name = "AU_ROLE")
 public class AuRole {
 
     @Id
-    @Column("ID")
+    @Column(name = "ID")
     private Long id;
 
-    @Column("ACCESS_LEVEL")
+    @Column(name = "ACCESS_LEVEL")
     private Integer accessLevel;
 
-    @Column("NAME")
+    @Column(name = "NAME")
     private String name;
 
-    @Column("DESCRIPTION")
+    @Column(name = "DESCRIPTION")
     private String description;
 
-    @Column("MODIFIED_BY")
+    @Column(name = "MODIFIED_BY")
     private String modifiedBy;
 
-    @Column("MODIFIED_DATE")
+    @Column(name = "MODIFIED_DATE")
     private OffsetDateTime modifiedDate;
 
-    public void setAccessLevel(Integer accessLevel) {
-        this.accessLevel = accessLevel;
-    }
+    public AuRole() {}
 
-    public void setName(String name) {
-        this.name = name;
-    }
+    public Long getId() { return id; }
+    public Integer getAccessLevel() { return accessLevel; }
+    public String getName() { return name; }
+    public String getDescription() { return description; }
+    public String getModifiedBy() { return modifiedBy; }
+    public OffsetDateTime getModifiedDate() { return modifiedDate; }
 
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    public void setModifiedBy(String modifiedBy) {
-        this.modifiedBy = modifiedBy;
-    }
-
-    public Integer getAccessLevel() {
-        return accessLevel;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public String getModifiedBy() {
-        return modifiedBy;
-    }
-
-    public OffsetDateTime getModifiedDate() {
-        return modifiedDate;
-    }
+    public void setId(Long id) { this.id = id; }
+    public void setAccessLevel(Integer accessLevel) { this.accessLevel = accessLevel; }
+    public void setName(String name) { this.name = name; }
+    public void setDescription(String description) { this.description = description; }
+    public void setModifiedBy(String modifiedBy) { this.modifiedBy = modifiedBy; }
+    public void setModifiedDate(OffsetDateTime modifiedDate) { this.modifiedDate = modifiedDate; }
 }

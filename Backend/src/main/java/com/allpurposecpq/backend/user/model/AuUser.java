@@ -1,110 +1,71 @@
 package com.allpurposecpq.backend.user.model;
 
-import org.springframework.data.annotation.Id;
-import org.springframework.data.relational.core.mapping.Table;
-import org.springframework.data.relational.core.mapping.Column;
-
+import jakarta.persistence.*;
 import java.time.OffsetDateTime;
+import java.util.List;
 
-@Table("AU_USER")
+@Entity
+@Table(name = "AU_USER")
 public class AuUser {
 
     @Id
-    @Column("ID")
+    @Column(name = "ID")
     private Long id;
 
-    @Column("DOMAIN_ID")
+    @Column(name = "DOMAIN_ID")
     private Long domainId;
 
-    @Column("CONTACT_ID")
+    @Column(name = "CONTACT_ID")
     private Long contactId;
 
-    @Column("USERNAME")
+    @Column(name = "USERNAME")
     private String username;
 
-    @Column("PASSWORD_HASH")
+    @Column(name = "PASSWORD_HASH")
     private String passwordHash;
 
-    @Column("ENABLED")
+    @Column(name = "ENABLED")
     private Integer enabled;
 
-    @Column("FULL_NAME")
+    @Column(name = "FULL_NAME")
     private String fullName;
 
-    @Column("MODIFIED_BY")
+    @Column(name = "MODIFIED_BY")
     private String modifiedBy;
 
-    @Column("MODIFIED_DATE")
+    @Column(name = "MODIFIED_DATE")
     private OffsetDateTime modifiedDate;
 
-    public void setDomainId(Long domainId) {
-        this.domainId = domainId;
-    }
+    // ✅ REPLACES AuUserRoleXr entirely — JPA handles the join table
+    @ManyToMany(fetch = FetchType.LAZY)
+    @JoinTable(
+            name = "AU_USER_ROLE_XR",
+            joinColumns = @JoinColumn(name = "USER_ID"),
+            inverseJoinColumns = @JoinColumn(name = "ROLE_ID")
+    )
+    private List<AuRole> roles;
 
-    public void setUsername(String username) {
-        this.username = username;
-    }
+    public AuUser() {}
 
-    public void setContactId(Long contactId) {
-        this.contactId = contactId;
-    }
+    public Long getId() { return id; }
+    public Long getDomainId() { return domainId; }
+    public Long getContactId() { return contactId; }
+    public String getUsername() { return username; }
+    public String getPasswordHash() { return passwordHash; }
+    public Integer getEnabled() { return enabled; }
+    public String getFullName() { return fullName; }
+    public String getModifiedBy() { return modifiedBy; }
+    public OffsetDateTime getModifiedDate() { return modifiedDate; }
+    public List<AuRole> getRoles() { return roles; }
 
-    public void setPasswordHash(String passwordHash) {
-        this.passwordHash = passwordHash;
-    }
-
-    public void setEnabled(Integer enabled) {
-        this.enabled = enabled;
-    }
-
-    public void setFullName(String fullName) {
-        this.fullName = fullName;
-    }
-
-    public void setModifiedBy(String modifiedBy) {
-        this.modifiedBy = modifiedBy;
-    }
-
-    public void setModifiedDate(OffsetDateTime modifiedDate) {
-        this.modifiedDate = modifiedDate;
-    }
-    public AuUser() {
-        super();
-    }
-
-    public Long getDomainId() {
-        return domainId;
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public Long getContactId() {
-        return contactId;
-    }
-
-    public String getUsername() {
-        return username;
-    }
-
-    public String getPasswordHash() {
-        return passwordHash;
-    }
-
-    public Integer getEnabled() {
-        return enabled;
-    }
-
-    public String getFullName() {
-        return fullName;
-    }
-
-    public String getModifiedBy() {
-        return modifiedBy;
-    }
-
-    public OffsetDateTime getModifiedDate() {
-        return modifiedDate;
-    }
+    public void setId(Long id) { this.id = id; }
+    public void setDomainId(Long domainId) { this.domainId = domainId; }
+    public void setContactId(Long contactId) { this.contactId = contactId; }
+    public void setUsername(String username) { this.username = username; }
+    public void setPasswordHash(String passwordHash) { this.passwordHash = passwordHash; }
+    public void setEnabled(Integer enabled) { this.enabled = enabled; }
+    public void setFullName(String fullName) { this.fullName = fullName; }
+    public void setModifiedBy(String modifiedBy) { this.modifiedBy = modifiedBy; }
+    public void setModifiedDate(OffsetDateTime modifiedDate) { this.modifiedDate = modifiedDate; }
+    public void setRoles(List<AuRole> roles) { this.roles = roles; }
 }
