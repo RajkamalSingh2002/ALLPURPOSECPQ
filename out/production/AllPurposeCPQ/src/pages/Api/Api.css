@@ -1,0 +1,60 @@
+.api-page {
+    min-height: 100vh;
+    background: #f7f8fb;
+    color: #0f172a;
+    font-family: "Poppins", "Segoe UI", sans-serif;
+    display: flex;
+    flex-direction: column;
+}
+
+.api-main {
+    padding: 2.5rem 10%;
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+}
+
+.api-hero h1 {
+    margin: 0 0 0.6rem;
+    font-size: 2.2rem;
+    border-bottom: 2px solid #e2e8f0;
+    padding-bottom: 1rem;
+}
+
+.api-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(240px, 1fr));
+    gap: 1.5rem;
+}
+
+.api-card {
+    background: #ffffff;
+    border: 1px solid #d8e1ef;
+    border-radius: 14px;
+    padding: 1.6rem;
+    box-shadow: 0 10px 20px rgba(15, 23, 42, 0.08);
+    display: flex;
+    flex-direction: column;
+    gap: 0.8rem;
+}
+
+.api-card button {
+    align-self: flex-start;
+    background: #5fb7ff;
+    color: #05203c;
+    padding: 0.5rem 1.4rem;
+    border-radius: 10px;
+    border: 1px solid #2f8fe0;
+    font-weight: 700;
+    cursor: pointer;
+}
+
+@media (max-width: 900px) {
+    .api-main {
+        padding: 1.5rem;
+    }
+
+    .api-grid {
+        grid-template-columns: 1fr;
+    }
+}
