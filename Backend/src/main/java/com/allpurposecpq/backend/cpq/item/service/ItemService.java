@@ -58,6 +58,7 @@ public class ItemService {
             existing.setImage(updatedItem.getImage());
             existing.setNoteAdmin(updatedItem.getNoteAdmin());
             existing.setStartDate(updatedItem.getStartDate());
+            existing.setCustomCss(updatedItem.getCustomCss());
             return itemRepository.save(existing);
         });
     }
