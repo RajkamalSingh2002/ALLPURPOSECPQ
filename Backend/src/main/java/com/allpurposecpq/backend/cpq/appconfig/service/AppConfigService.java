@@ -51,6 +51,8 @@ public class AppConfigService {
             existing.setDetail(updated.getDetail());
             existing.setHelp(updated.getHelp());
             existing.setNoteAdmin(updated.getNoteAdmin());
+            existing.setCssFile(updated.getCssFile());
+            existing.setDateValue(updated.getDateValue());
             return appConfigRepository.save(existing);
         });
     }

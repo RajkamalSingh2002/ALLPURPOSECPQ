@@ -9,7 +9,7 @@ public class AppConfig {
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "config_seq")
-    @SequenceGenerator(name = "config_seq", sequenceName = "PKCONFIG", allocationSize = 1)
+    @SequenceGenerator(name = "config_seq", sequenceName = "PK_CONFIG", allocationSize = 1)
     @Column(name = "ID")
     private Long id;
 
@@ -42,6 +42,19 @@ public class AppConfig {
 
     @Column(name = "STOP_DATE")
     private OffsetDateTime stopDate;
+
+    @Column(name = "CSS_FILE")
+    private String cssFile;
+
+    @Column(name = "DATE_VALUE")
+    private OffsetDateTime dateValue;
+
+    @Column(name = "MODIFIED_BY")
+    private String modifiedBy;
+
+    @Column(name = "MODIFIED_DATE")
+    private OffsetDateTime modifiedDate;
+
 
     // --- Getters and Setters ---
 
@@ -77,4 +90,17 @@ public class AppConfig {
 
     public OffsetDateTime getStopDate() { return stopDate; }
     public void setStopDate(OffsetDateTime stopDate) { this.stopDate = stopDate; }
+
+    public String getCssFile() { return cssFile; }
+    public void setCssFile(String cssFile) { this.cssFile = cssFile; }
+
+    public OffsetDateTime getDateValue() { return dateValue; }
+    public void setDateValue(OffsetDateTime dateValue) { this.dateValue = dateValue; }
+
+    public String getModifiedBy() { return modifiedBy; }
+    public void setModifiedBy(String modifiedBy) { this.modifiedBy = modifiedBy; }
+
+    public OffsetDateTime getModifiedDate() { return modifiedDate; }
+    public void setModifiedDate(OffsetDateTime modifiedDate) { this.modifiedDate = modifiedDate; }
+
 }

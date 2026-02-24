@@ -9,7 +9,7 @@ public class Item {
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "item_seq")
-    @SequenceGenerator(name = "item_seq", sequenceName = "ITEM_SEQ", allocationSize = 1)
+    @SequenceGenerator(name = "item_seq", sequenceName = "PK_ITEM", allocationSize = 1)
     @Column(name = "ID")
     private Long id;
 
@@ -78,6 +78,16 @@ public class Item {
 
     @Column(name = "STOP_DATE")
     private OffsetDateTime stopDate;
+
+
+    @Column(name = "CUSTOM_CSS")
+    private String customCss;
+
+    @Column(name = "MODIFIED_BY")
+    private String modifiedBy;
+
+    @Column(name = "MODIFIED_DATE")
+    private OffsetDateTime modifiedDate;
 
     // ---- Getters and Setters ----
 
@@ -149,4 +159,14 @@ public class Item {
 
     public OffsetDateTime getStopDate() { return stopDate; }
     public void setStopDate(OffsetDateTime stopDate) { this.stopDate = stopDate; }
+
+    public String getCustomCss() { return customCss; }
+    public void setCustomCss(String customCss) { this.customCss = customCss; }
+
+    public String getModifiedBy() { return modifiedBy; }
+    public void setModifiedBy(String modifiedBy) { this.modifiedBy = modifiedBy; }
+
+    public OffsetDateTime getModifiedDate() { return modifiedDate; }
+    public void setModifiedDate(OffsetDateTime modifiedDate) { this.modifiedDate = modifiedDate; }
+
 }
