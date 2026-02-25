@@ -13,9 +13,9 @@ import FormulaBuilder from "./pages/Config/FormulaBuilder";
 import PdfTemplate from "./pages/Config/PdfTemplate";
 import Components from "./pages/Config/Components";
 import { isLoggedIn } from "./services/auth";
-import {JSX} from "react";
+import type { ReactElement } from "react";
 
-function RequireAuth({ children }: { children: JSX.Element }) {
+function RequireAuth({ children }: { children: ReactElement }) {
     return isLoggedIn() ? children : <Navigate to="/?login=1" replace />;
 }
 
