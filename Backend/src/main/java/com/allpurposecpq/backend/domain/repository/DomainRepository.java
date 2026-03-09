@@ -1,7 +1,7 @@
-package com.allpurposecpq.backend.domain;
+package com.allpurposecpq.backend.domain.repository;
 
-import com.allpurposecpq.backend.dto.ConfigItemDto;
-import com.allpurposecpq.backend.dto.DomainDto;
+import com.allpurposecpq.backend.cpq.appconfig.dto.ConfigItemDto;
+import com.allpurposecpq.backend.domain.dto.DomainDto;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 

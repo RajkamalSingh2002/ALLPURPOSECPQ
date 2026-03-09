@@ -1,4 +1,4 @@
-package com.allpurposecpq.backend.dto;
+package com.allpurposecpq.backend.product.dto;
 
 import java.time.OffsetDateTime;
 

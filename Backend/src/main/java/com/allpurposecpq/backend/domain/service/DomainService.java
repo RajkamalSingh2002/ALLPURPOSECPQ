@@ -1,8 +1,8 @@
-package com.allpurposecpq.backend.service;
+package com.allpurposecpq.backend.domain.service;
 
-import com.allpurposecpq.backend.domain.DomainRepository;
-import com.allpurposecpq.backend.dto.ConfigItemDto;
-import com.allpurposecpq.backend.dto.DomainDto;
+import com.allpurposecpq.backend.domain.repository.DomainRepository;
+import com.allpurposecpq.backend.cpq.appconfig.dto.ConfigItemDto;
+import com.allpurposecpq.backend.domain.dto.DomainDto;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
