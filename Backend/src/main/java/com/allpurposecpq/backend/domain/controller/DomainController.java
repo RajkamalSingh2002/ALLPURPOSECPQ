@@ -1,8 +1,8 @@
-package com.allpurposecpq.backend.controller;
+package com.allpurposecpq.backend.domain.controller;
 
-import com.allpurposecpq.backend.dto.ConfigItemDto;
-import com.allpurposecpq.backend.dto.DomainDto;
-import com.allpurposecpq.backend.service.DomainService;
+import com.allpurposecpq.backend.cpq.appconfig.dto.ConfigItemDto;
+import com.allpurposecpq.backend.domain.dto.DomainDto;
+import com.allpurposecpq.backend.domain.service.DomainService;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;

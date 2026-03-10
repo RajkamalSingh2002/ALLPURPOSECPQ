@@ -15,6 +15,9 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import com.allpurposecpq.backend.shared.exception.BadRequestException;
+import com.allpurposecpq.backend.shared.exception.ResourceNotFoundException;
+
 
 import java.time.OffsetDateTime;
 import java.util.ArrayList;
@@ -47,18 +50,12 @@ public class AuthService {
     @Transactional(readOnly = true)
     public LoginResponse login(LoginRequest request) {
         Optional<AuUser> userOpt = auUserRepository.findByUsername(request.getUsername());
-        if (userOpt.isEmpty()) throw new RuntimeException("Invalid username or password");
-
         AuUser user = userOpt.get();
-
-        if (user.getEnabled() == null || user.getEnabled() == 0) {
-            throw new RuntimeException("User is disabled");
-        }
-
-        if (!passwordEncoder.matches(request.getPassword(), user.getPasswordHash())) {
-            throw new RuntimeException("Invalid username or password");
-        }
-
+        if (userOpt.isEmpty()) throw new ResourceNotFoundException("Invalid username or password");
+        if (user.getEnabled() == null || user.getEnabled() == 0)
+            throw new BadRequestException("User is disabled");
+        if (!passwordEncoder.matches(request.getPassword(), user.getPasswordHash()))
+            throw new BadRequestException("Invalid username or password");
         List<String> roleNames = loadUserRoleNames(user);
 
         String accessToken = jwtTokenProvider.generateAccessToken(
@@ -108,15 +105,11 @@ public class AuthService {
         String incomingToken = request.getRefreshToken();
 
         RefreshToken stored = refreshTokenRepository.findByToken(incomingToken)
-                .orElseThrow(() -> new RuntimeException("Invalid refresh token"));
-
-        if (stored.getRevoked() != null && stored.getRevoked() == 1) {
-            throw new RuntimeException("Refresh token revoked");
-        }
-
-        if (stored.getExpiryDate().isBefore(OffsetDateTime.now())) {
-            throw new RuntimeException("Refresh token expired");
-        }
+                .orElseThrow(() -> new ResourceNotFoundException("Invalid refresh token"));
+        if (stored.getRevoked() != null && stored.getRevoked() == 1)
+            throw new BadRequestException("Refresh token revoked");
+        if (stored.getExpiryDate().isBefore(OffsetDateTime.now()))
+            throw new BadRequestException("Refresh token expired");
 
         AuUser user = auUserRepository.findById(stored.getUserId())
                 .orElseThrow(() -> new RuntimeException("User not found"));
@@ -141,7 +134,7 @@ public class AuthService {
     @Transactional
     public void register(RegisterRequest request) {
         Optional<AuUser> existing = auUserRepository.findByUsername(request.getUsername());
-        if (existing.isPresent()) throw new RuntimeException("Username already exists");
+        if (existing.isPresent()) throw new BadRequestException("Username already exists");
 
         AuUser user = new AuUser();
         user.setDomainId(request.getDomainId());

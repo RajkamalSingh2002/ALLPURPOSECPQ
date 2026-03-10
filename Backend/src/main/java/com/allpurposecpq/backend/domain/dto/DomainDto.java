@@ -1,4 +1,4 @@
-package com.allpurposecpq.backend.dto;
+package com.allpurposecpq.backend.domain.dto;
 import java.time.OffsetDateTime;
 
 public class DomainDto {
