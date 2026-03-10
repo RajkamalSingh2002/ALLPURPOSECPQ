@@ -2,6 +2,8 @@ package com.allpurposecpq.backend.product.controller;
 
 import com.allpurposecpq.backend.product.dto.OfferingDto;
 import com.allpurposecpq.backend.product.service.ProductService;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -17,12 +19,30 @@ public class OfferingController {
     }
 
     @GetMapping
-    public List<OfferingDto> getOfferings() {
-        return productService.getActiveOfferings();
+    public ResponseEntity<List<OfferingDto>> getAll() {
+        return ResponseEntity.ok(productService.getActiveOfferings());
     }
 
     @GetMapping("/{id}")
-    public OfferingDto getOffering(@PathVariable long id) {
-        return productService.getOffering(id);
+    public ResponseEntity<OfferingDto> getById(@PathVariable long id) {
+        return ResponseEntity.ok(productService.getOffering(id));
+    }
+
+    @PostMapping
+    public ResponseEntity<OfferingDto> create(@RequestBody OfferingDto dto) {
+        return ResponseEntity.status(HttpStatus.CREATED)
+                .body(productService.createOffering(dto));
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<OfferingDto> update(@PathVariable long id,
+                                              @RequestBody OfferingDto dto) {
+        return ResponseEntity.ok(productService.updateOffering(id, dto));
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> delete(@PathVariable long id) {
+        productService.deleteOffering(id);
+        return ResponseEntity.noContent().build();
     }
 }
