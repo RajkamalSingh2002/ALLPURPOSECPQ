@@ -1,7 +1,7 @@
-package com.allpurposecpq.backend.product.service;
+package com.allpurposecpq.backend.cpq.product.service;
 
-import com.allpurposecpq.backend.product.dto.OfferingDto;
-import com.allpurposecpq.backend.product.dto.ProductDto;
+import com.allpurposecpq.backend.cpq.product.dto.OfferingDto;
+import com.allpurposecpq.backend.cpq.product.dto.ProductDto;
 
 import java.util.List;
 

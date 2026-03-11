@@ -1,9 +1,9 @@
-package com.allpurposecpq.backend.product.service;
+package com.allpurposecpq.backend.cpq.product.service;
 
-import com.allpurposecpq.backend.product.dto.OfferingDto;
-import com.allpurposecpq.backend.product.dto.ProductDto;
-import com.allpurposecpq.backend.product.repository.OfferingRepository;
-import com.allpurposecpq.backend.product.repository.ProductRepository;
+import com.allpurposecpq.backend.cpq.product.dto.OfferingDto;
+import com.allpurposecpq.backend.cpq.product.dto.ProductDto;
+import com.allpurposecpq.backend.cpq.product.repository.OfferingRepository;
+import com.allpurposecpq.backend.cpq.product.repository.ProductRepository;
 import com.allpurposecpq.backend.shared.exception.ResourceNotFoundException;
 import org.springframework.stereotype.Service;
 

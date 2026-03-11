@@ -1,8 +1,8 @@
-package com.allpurposecpq.backend.product.dto;
+package com.allpurposecpq.backend.cpq.product.dto;
 
 import java.time.OffsetDateTime;
 
-public class ProductDto {
+public class OfferingDto {
     private Long id;
     private Long domainId;
     private String name;
@@ -13,12 +13,12 @@ public class ProductDto {
     private String description;
     private String detail;
     private String help;
-    private String noteAdmin;
+    private String note;
     private String formula;
-    private Long wid;
+    private Long wrdId;
     private Integer sortOrder;
     private OffsetDateTime startDate;
-    private OffsetDateTime stopDate;
+    private OffsetDateTime endDate;
 
     public Long getId() { return id; }
     public void setId(Long id) { this.id = id; }
@@ -50,14 +50,14 @@ public class ProductDto {
     public String getHelp() { return help; }
     public void setHelp(String help) { this.help = help; }
 
-    public String getNoteAdmin() { return noteAdmin; }
-    public void setNoteAdmin(String noteAdmin) { this.noteAdmin = noteAdmin; }
+    public String getNote() { return note; }
+    public void setNote(String note) { this.note = note; }
 
     public String getFormula() { return formula; }
     public void setFormula(String formula) { this.formula = formula; }
 
-    public Long getWid() { return wid; }
-    public void setWid(Long wid) { this.wid = wid; }
+    public Long getWrdId() { return wrdId; }
+    public void setWrdId(Long wrdId) { this.wrdId = wrdId; }
 
     public Integer getSortOrder() { return sortOrder; }
     public void setSortOrder(Integer sortOrder) { this.sortOrder = sortOrder; }
@@ -65,6 +65,6 @@ public class ProductDto {
     public OffsetDateTime getStartDate() { return startDate; }
     public void setStartDate(OffsetDateTime startDate) { this.startDate = startDate; }
 
-    public OffsetDateTime getStopDate() { return stopDate; }
-    public void setStopDate(OffsetDateTime stopDate) { this.stopDate = stopDate; }
+    public OffsetDateTime getEndDate() { return endDate; }
+    public void setEndDate(OffsetDateTime endDate) { this.endDate = endDate; }
 }

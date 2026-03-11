@@ -1,6 +1,6 @@
-package com.allpurposecpq.backend.product.repository;
+package com.allpurposecpq.backend.cpq.product.repository;
 
-import com.allpurposecpq.backend.product.dto.OfferingDto;
+import com.allpurposecpq.backend.cpq.product.dto.ProductDto;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
@@ -17,48 +17,46 @@ import java.util.List;
 import java.util.Optional;
 
 @Repository
-public class OfferingRepository {
+public class ProductRepository {
 
     private final JdbcTemplate jdbcTemplate;
 
-    public OfferingRepository(JdbcTemplate jdbcTemplate) {
+    public ProductRepository(JdbcTemplate jdbcTemplate) {
         this.jdbcTemplate = jdbcTemplate;
     }
 
-    public List<OfferingDto> findAllActive() {
+    public List<ProductDto> findAllActive() {
         String sql = """
                 SELECT ID, DOMAIN_ID, NAME, RID, "PRECISION",
-                       CATIGORY, SUB_CATIGORY, DESCRIPTION,
-                       DETAIL, HELP, NOTE, FML, WRD_ID,
-                       SORT_ORDER, START_DATE, END_DATE
-                FROM OFFERING
-                WHERE DELETED_DATE IS NULL
-                  AND (START_DATE IS NULL OR START_DATE <= SYSTIMESTAMP)
-                  AND (END_DATE IS NULL OR END_DATE >= SYSTIMESTAMP)
+                       CATIGORY, SUB_CATEGORY, DESCRIPTION,
+                       DETAIL, HELP, NOTE_ADMIN, FML, WID,
+                       SORT_ORDER, START_DATE, STOP_DATE
+                FROM PRODUCT
+                WHERE (START_DATE IS NULL OR START_DATE <= SYSTIMESTAMP)
+                  AND (STOP_DATE IS NULL OR STOP_DATE >= SYSTIMESTAMP)
                 ORDER BY SORT_ORDER, NAME
                 """;
-        return jdbcTemplate.query(sql, this::mapOffering);
+        return jdbcTemplate.query(sql, this::mapProduct);
     }
 
-    public Optional<OfferingDto> findById(long id) {
+    public Optional<ProductDto> findById(long id) {
         String sql = """
                 SELECT ID, DOMAIN_ID, NAME, RID, "PRECISION",
-                       CATIGORY, SUB_CATIGORY, DESCRIPTION,
-                       DETAIL, HELP, NOTE, FML, WRD_ID,
-                       SORT_ORDER, START_DATE, END_DATE
-                FROM OFFERING
-                WHERE ID = ? AND DELETED_DATE IS NULL
+                       CATIGORY, SUB_CATEGORY, DESCRIPTION,
+                       DETAIL, HELP, NOTE_ADMIN, FML, WID,
+                       SORT_ORDER, START_DATE, STOP_DATE
+                FROM PRODUCT
+                WHERE ID = ?
                 """;
-        return jdbcTemplate.query(sql, this::mapOffering, id).stream().findFirst();
+        return jdbcTemplate.query(sql, this::mapProduct, id).stream().findFirst();
     }
 
-    public long insert(OfferingDto dto) {
+    public long insert(ProductDto dto) {
         String sql = """
-                INSERT INTO OFFERING (DOMAIN_ID, NAME, RID, "PRECISION",
-                                      CATIGORY, SUB_CATIGORY, DESCRIPTION,
-                                      DETAIL, HELP, NOTE, FML, WRD_ID,
-                                      SORT_ORDER, START_DATE, END_DATE,
-                                      MODIFIED_BY)
+                INSERT INTO PRODUCT (DOMAIN_ID, NAME, RID, "PRECISION",
+                                     CATIGORY, SUB_CATEGORY, DESCRIPTION,
+                                     DETAIL, HELP, NOTE_ADMIN, FML, WID,
+                                     SORT_ORDER, START_DATE, STOP_DATE, MODIFIED_BY)
                 VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 'SYS')
                 """;
         KeyHolder keyHolder = new GeneratedKeyHolder();
@@ -73,49 +71,50 @@ public class OfferingRepository {
             ps.setString(7, dto.getDescription());
             ps.setString(8, dto.getDetail());
             ps.setString(9, dto.getHelp());
-            ps.setString(10, dto.getNote());
+            ps.setString(10, dto.getNoteAdmin());
             ps.setString(11, dto.getFormula());
-            ps.setObject(12, dto.getWrdId());
+            ps.setObject(12, dto.getWid());
             ps.setObject(13, dto.getSortOrder());
             ps.setObject(14, dto.getStartDate() != null
                     ? Timestamp.from(dto.getStartDate().toInstant()) : null);
-            ps.setObject(15, dto.getEndDate() != null
-                    ? Timestamp.from(dto.getEndDate().toInstant()) : null);
+            ps.setObject(15, dto.getStopDate() != null
+                    ? Timestamp.from(dto.getStopDate().toInstant()) : null);
             return ps;
         }, keyHolder);
         return keyHolder.getKey().longValue();
     }
 
-    public int update(long id, OfferingDto dto) {
+    public int update(long id, ProductDto dto) {
         String sql = """
-                UPDATE OFFERING SET
+                UPDATE PRODUCT SET
                     NAME = ?, RID = ?, "PRECISION" = ?,
-                    CATIGORY = ?, SUB_CATIGORY = ?, DESCRIPTION = ?,
-                    DETAIL = ?, HELP = ?, NOTE = ?, FML = ?,
-                    WRD_ID = ?, SORT_ORDER = ?, START_DATE = ?, END_DATE = ?,
+                    CATIGORY = ?, SUB_CATEGORY = ?, DESCRIPTION = ?,
+                    DETAIL = ?, HELP = ?, NOTE_ADMIN = ?, FML = ?,
+                    WID = ?, SORT_ORDER = ?, START_DATE = ?, STOP_DATE = ?,
                     MODIFIED_BY = 'SYS'
-                WHERE ID = ? AND DELETED_DATE IS NULL
+                WHERE ID = ?
                 """;
         return jdbcTemplate.update(sql,
                 dto.getName(), dto.getRid(), dto.getPrecision(),
                 dto.getCategory(), dto.getSubCategory(), dto.getDescription(),
-                dto.getDetail(), dto.getHelp(), dto.getNote(), dto.getFormula(),
-                dto.getWrdId(), dto.getSortOrder(),
+                dto.getDetail(), dto.getHelp(), dto.getNoteAdmin(), dto.getFormula(),
+                dto.getWid(), dto.getSortOrder(),
                 dto.getStartDate() != null ? Timestamp.from(dto.getStartDate().toInstant()) : null,
-                dto.getEndDate() != null ? Timestamp.from(dto.getEndDate().toInstant()) : null,
+                dto.getStopDate() != null ? Timestamp.from(dto.getStopDate().toInstant()) : null,
                 id);
     }
 
     public int softDelete(long id) {
+        // PRODUCT has no DELETED_DATE — use STOP_DATE to expire it
         String sql = """
-                UPDATE OFFERING SET DELETED_DATE = SYSTIMESTAMP, MODIFIED_BY = 'SYS'
-                WHERE ID = ? AND DELETED_DATE IS NULL
+                UPDATE PRODUCT SET STOP_DATE = SYSTIMESTAMP, MODIFIED_BY = 'SYS'
+                WHERE ID = ?
                 """;
         return jdbcTemplate.update(sql, id);
     }
 
-    private OfferingDto mapOffering(ResultSet rs, int rowNum) throws SQLException {
-        OfferingDto dto = new OfferingDto();
+    private ProductDto mapProduct(ResultSet rs, int rowNum) throws SQLException {
+        ProductDto dto = new ProductDto();
         dto.setId(rs.getLong("ID"));
         dto.setDomainId(rs.getLong("DOMAIN_ID"));
         dto.setName(rs.getString("NAME"));
@@ -124,18 +123,18 @@ public class OfferingRepository {
         dto.setPrecision(rs.getObject("PRECISION") != null
                 ? rs.getObject("PRECISION", BigDecimal.class).intValue() : null);
         dto.setCategory(rs.getString("CATIGORY"));
-        dto.setSubCategory(rs.getString("SUB_CATIGORY"));
+        dto.setSubCategory(rs.getString("SUB_CATEGORY"));
         dto.setDescription(rs.getString("DESCRIPTION"));
         dto.setDetail(rs.getString("DETAIL"));
         dto.setHelp(rs.getString("HELP"));
-        dto.setNote(rs.getString("NOTE"));
+        dto.setNoteAdmin(rs.getString("NOTE_ADMIN"));
         dto.setFormula(rs.getString("FML"));
-        dto.setWrdId(rs.getObject("WRD_ID") != null
-                ? rs.getObject("WRD_ID", BigDecimal.class).longValue() : null);
+        dto.setWid(rs.getObject("WID") != null
+                ? rs.getObject("WID", BigDecimal.class).longValue() : null);
         dto.setSortOrder(rs.getObject("SORT_ORDER") != null
                 ? rs.getObject("SORT_ORDER", BigDecimal.class).intValue() : null);
         dto.setStartDate(toOffsetDateTime(rs.getObject("START_DATE")));
-        dto.setEndDate(toOffsetDateTime(rs.getObject("END_DATE")));
+        dto.setStopDate(toOffsetDateTime(rs.getObject("STOP_DATE")));
         return dto;
     }
 

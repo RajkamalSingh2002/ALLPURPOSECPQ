@@ -1,7 +1,7 @@
-package com.allpurposecpq.backend.product.controller;
+package com.allpurposecpq.backend.cpq.product.controller;
 
-import com.allpurposecpq.backend.product.dto.OfferingDto;
-import com.allpurposecpq.backend.product.service.ProductService;
+import com.allpurposecpq.backend.cpq.product.dto.OfferingDto;
+import com.allpurposecpq.backend.cpq.product.service.ProductService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
